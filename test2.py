@@ -1,6 +1,7 @@
 import pygame
 import sys
 import pygame.mixer
+import pygame.time
 
 # Définissez des valeurs par défaut
 default_hauteur = 800
@@ -44,25 +45,39 @@ pygame.display.set_caption("Prototype de jeu")
 circle_x = 0
 circle_y = 0
 
-# Position du bloc
-block_x = 1
-block_y = 1
+# Liste des blocs
+blocks = []
 
-# Vitesse de téléportation
-teleport_distance = grid_cell_size
+class Block:
+    def __init__(self, x, y, block_type):
+        self.x = x
+        self.y = y
+        self.type = block_type
+
+# Ajoutez des blocs avec un exemple de bloc mur
+blocks.append(Block(1, 1, "mur"))
+
 
 # Taille du cercle
 circle_radius = 20
-
-# Taille du bloc
-block_width = grid_cell_size
-block_height = grid_cell_size
 
 # Couleur de la grille
 GRID_COLOR = (200, 200, 200)
 
 # Dictionnaire pour suivre l'état des touches
 key_pressed = {pygame.K_LEFT: False, pygame.K_RIGHT: False, pygame.K_UP: False, pygame.K_DOWN: False}
+
+# BPM de la musique
+bpm = 128
+
+# Calculer l'intervalle de battement
+beat_interval = 60000 / bpm  # 60000 ms (1 minute) divisé par le BPM
+
+# Suivre le temps du dernier battement
+last_beat_time = 0
+
+# Variable pour suivre le temps fort de la musique
+beat_count = 0
 
 running = True
 
@@ -85,7 +100,9 @@ while running:
                 new_y += 1
 
             # Vérifier si la nouvelle position est valide
-            if 0 <= new_x < num_cells and 0 <= new_y < num_cells and not (new_x == block_x and new_y == block_y):
+            if 0 <= new_x < num_cells and 0 <= new_y < num_cells and all(
+                (new_x != block.x or new_y != block.y) for block in blocks
+            ):
                 circle_x, circle_y = new_x, new_y
 
                 # Afficher les coordonnées du rond
@@ -94,15 +111,33 @@ while running:
         if not pygame.key.get_pressed()[key]:
             key_pressed[key] = False
 
+    # Obtenir le temps actuel
+    current_time = pygame.time.get_ticks()
+
+    # Vérifier le temps fort de la musique
+    if current_time - last_beat_time >= beat_interval:
+        beat_count += 1
+        if beat_count % 2 == 0:
+            print("Temps fort de la musique ! /")
+        else:
+            print("Temps fort de la musique ! \\")
+
+        # Mettez à jour le temps du dernier battement
+        last_beat_time = current_time
+
     # Dessiner la grille
     for x in range(0, WIDTH, grid_cell_size):
         pygame.draw.line(screen, GRID_COLOR, (x, 0), (x, HEIGHT))
     for y in range(0, HEIGHT, grid_cell_size):
         pygame.draw.line(screen, GRID_COLOR, (0, y), (WIDTH, y))
 
-    # Dessiner le bloc
-    block_rect = pygame.Rect(block_x * grid_cell_size, block_y * grid_cell_size, block_width, block_height)
-    pygame.draw.rect(screen, BLUE, block_rect)
+    # Dessiner les blocs
+    for block in blocks:
+        if block.type == "mur":
+            block_rect = pygame.Rect(
+                block.x * grid_cell_size, block.y * grid_cell_size, grid_cell_size, grid_cell_size
+            )
+            pygame.draw.rect(screen, BLUE, block_rect)
 
     # Dessiner le cercle du joueur
     circle_center_x = (circle_x + 0.5) * grid_cell_size
