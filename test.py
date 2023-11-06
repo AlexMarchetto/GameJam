@@ -1,7 +1,7 @@
 # Example file showing a circle moving on screen
 import pygame
 
-# Programme principal du jeux
+#  e Programme principal du jeux
 def main():
     # Démmarre le module 
     pygame.init()
