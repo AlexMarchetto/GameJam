@@ -1,53 +1,63 @@
-# Example file showing a circle moving on screen
 import pygame
+import sys
 
-#  e Programme principal du jeux
-def main():
-    # Démmarre le module 
-    pygame.init()
-    # définit l'écran et sa taille
-    screen = pygame.display.set_mode((1280, 720), 
-                                 pygame.RESIZABLE)
-    # Définit l'horloge pour connaitre le temps qui a passé
-    clock = pygame.time.Clock()
+# Initialisation de Pygame
+pygame.init()
 
-    #title
-    pygame.display.set_caption("fj")
+# Paramètres de la fenêtre
+largeur_fenetre = 800
+hauteur_fenetre = 600
+fenetre = pygame.display.set_mode((largeur_fenetre, hauteur_fenetre),pygame.RESIZABLE)
+pygame.display.set_caption("Sélection de Niveau")
 
-    # Pour savoir quand la boucle du jeu se termine
-    running = True
-    # Le temps passé entre deux rafraichissement de l'écran en millisecondes
-    dt = 0
-    # La position du joueur : au milieu de l'écran
-    player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-    # Boucle de l'animation
-    while running:
-        # Parcourt tous les evenements pour les traiter
-        for event in pygame.event.get():
-            # QUIT signifie que l'utilisateur a fermé la fenêtre
-            if event.type == pygame.QUIT:
-                running = False
-        # Efface l'écran précédent en remplissant l'écran 
-        screen.fill("green")
-        # Dessin d'un cercle à la position du joueur
-        pygame.draw.circle(screen, "red", player_pos, 40)
-        # Examine les touche pressée, possiblement plusieurs
-        keys = pygame.key.get_pressed()
-        # Action de modification pour chaque touche
-        if keys[pygame.K_s]:
-            player_pos.x -= 0.3 * dt
-        if keys[pygame.K_d]:
-            player_pos.x += 0.3 * dt
-        if keys[pygame.K_a]:
-            player_pos.y -= 0.3 * dt
-        if keys[pygame.K_q]:
-            player_pos.y += 0.3 * dt
-        # Comme les dessions sont fait dans un buffer, permute le buffer
-        pygame.display.flip()
-        # Limite le frame rate à 60 images par secondes et retourne le temps réel passé
-        dt = clock.tick(60) 
-    # Termine proprement le module
-    pygame.quit()
+# Couleurs
+blanc = (255, 255, 255)
+noir = (0, 0, 0)
+rouge = (255, 0, 0)
+gris = (150, 150, 150)  # Nouvelle couleur pour les niveaux non terminés
 
-# Appel au programme principal
-main()
+# Polices de texte
+police = pygame.font.Font(None, 36)
+
+# Niveaux et leur état de terminaison
+niveaux = ["Niveau 1", "Niveau 2", "Niveau 3", "Niveau 4"]
+niveaux_termines = [True, True, False, False]  # Exemple, indiquez l'état de chaque niveau
+
+# Fonction pour afficher le texte et les niveaux
+def afficher_niveaux():
+    fenetre.fill(blanc)
+    for i, (niveau, termine) in enumerate(zip(niveaux, niveaux_termines)):
+        if termine:
+            couleur_texte = noir
+        else:
+            couleur_texte = gris
+
+        texte = police.render(niveau, True, couleur_texte)
+        x = largeur_fenetre // 2 - texte.get_width() // 2
+        y = 100 + i * 100
+        fenetre.blit(texte, (x, y))
+        if termine:
+            pygame.draw.rect(fenetre, rouge, (x - 10, y - 10, texte.get_width() + 20, texte.get_height() + 20), 2)
+
+# Boucle principale
+en_cours = True
+while en_cours:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            en_cours = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Vérifier si un niveau a été sélectionné
+            for i, (niveau, termine) in enumerate(zip(niveaux, niveaux_termines)):
+                if termine:
+                    x = largeur_fenetre // 2 - police.size(niveau)[0] // 2
+                    y = 100 + i * 100
+                    if x - 10 < event.pos[0] < x + police.size(niveau)[0] + 10 and y - 10 < event.pos[1] < y + police.size(niveau)[1] + 10:
+                        niveau_selectionne = niveau
+                        print("Niveau sélectionné:", niveau_selectionne)
+                        en_cours = False
+
+    afficher_niveaux()
+    pygame.display.flip()
+
+pygame.quit()
+sys.exit()
