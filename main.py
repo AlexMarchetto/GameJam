@@ -1,5 +1,7 @@
 import pygame
 import sys
+import os
+import time
 
 # Initialisation de Pygame
 pygame.init()
@@ -7,7 +9,7 @@ pygame.init()
 # Paramètres de la fenêtre
 largeur_fenetre = 800
 hauteur_fenetre = 600
-fenetre = pygame.display.set_mode((largeur_fenetre, hauteur_fenetre),pygame.RESIZABLE)
+fenetre = pygame.display.set_mode((largeur_fenetre, hauteur_fenetre))
 pygame.display.set_caption("Sélection de Niveau")
 
 # Couleurs
@@ -21,7 +23,7 @@ police = pygame.font.Font(None, 36)
 
 # Niveaux et leur état de terminaison
 niveaux = ["Niveau 1", "Niveau 2", "Niveau 3", "Niveau 4"]
-niveaux_termines = [True, True, False, False]  # Exemple, indiquez l'état de chaque niveau
+niveaux_termines = [True, False, False, False]  # Exemple, indiquez l'état de chaque niveau
 
 # Fonction pour afficher le texte et les niveaux
 def afficher_niveaux():
@@ -38,6 +40,8 @@ def afficher_niveaux():
         fenetre.blit(texte, (x, y))
         if termine:
             pygame.draw.rect(fenetre, rouge, (x - 10, y - 10, texte.get_width() + 20, texte.get_height() + 20), 2)
+
+niveau_selectionne=""
 
 # Boucle principale
 en_cours = True
@@ -60,4 +64,19 @@ while en_cours:
     pygame.display.flip()
 
 pygame.quit()
+
+time.sleep(0.2)
+
+# Exécute le code du niveau correspondant
+if niveau_selectionne == "Niveau 1":
+    print("Exécute Niveau 1")
+    os.system("python test2.py")
+elif niveau_selectionne == "Niveau 2":
+    print("Exécute Niveau 2")
+    os.system("python niveau2.py")
+elif niveau_selectionne == "Niveau 3":
+    print("Exécute Niveau 3")
+    os.system("python niveau3.py")
 sys.exit()
+
+
