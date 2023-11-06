@@ -21,7 +21,7 @@ police = pygame.font.Font(None, 36)
 
 # Niveaux et leur état de terminaison
 niveaux = ["Niveau 1", "Niveau 2", "Niveau 3", "Niveau 4"]
-niveaux_termines = [True, False, False, False]  # Exemple, indiquez l'état de chaque niveau
+niveaux_termines = [True, True, False, False]  # Exemple, indiquez l'état de chaque niveau
 
 # Fonction pour afficher le texte et les niveaux
 def afficher_niveaux():
