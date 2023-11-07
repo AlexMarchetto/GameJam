@@ -6,11 +6,8 @@ def main():
 
     with open("data.txt") as file:
         contenue=file.read()
-    if contenue=="3F":
-        n1=Niveau(1,"niveau1.py",True)
-        n2=Niveau(2,"niveau2.py",True)
-        n3=Niveau(3,"niveau3.py",True)
-    elif contenue=="3":
+
+    if contenue=="3" or contenue=="F":
         n1=Niveau(1,"niveau1.py",True)
         n2=Niveau(2,"niveau2.py",True)
         n3=Niveau(3,"niveau3.py",True)
@@ -28,6 +25,8 @@ def main():
 
     niveaux=[n1,n2,n3]
     game=Jeu(niveaux)
+    if contenue=="F":
+        game.setTrueEstFini()
     game.interface()
 
 main()

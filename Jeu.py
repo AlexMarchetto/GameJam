@@ -7,6 +7,10 @@ from Niveau import Niveau
 class Jeu:
     def __init__(self,niveaux):
         self.niveaux=niveaux
+        self.estFini=False
+
+    def setTrueEstFini(self):
+        self.estFini=True
 
     def interface(self):
         print("Création de l'interface principale")
@@ -28,6 +32,15 @@ class Jeu:
 
         # Polices de texte
         police = pygame.font.Font(None, 36)
+
+        # Phrase en haut de l'interface
+        if not(self.estFini):
+            phrase = "Sélectionnez un niveau"
+        else:
+            phrase = "Vous avez terminé tous les niveaux"
+        phrase_texte = police.render(phrase, True, noir)
+        phrase_x = largeur_fenetre // 2 - phrase_texte.get_width() // 2
+        phrase_y = 20
 
         # Niveaux et leur état de terminaison
         nomNiveaux=[]
@@ -56,6 +69,8 @@ class Jeu:
                                 en_cours = False
 
             fenetre.fill(blanc)
+            # Afficher la phrase en haut de l'interface
+            fenetre.blit(phrase_texte, (phrase_x, phrase_y))
             for i, (niveau, termine) in enumerate(zip(nomNiveaux, niveaux_termines)):
                 if termine:
                     couleur_texte = noir
