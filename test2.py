@@ -2,8 +2,13 @@ import pygame
 import sys
 import pygame.mixer
 import pygame.time
+import random
 
-# Définissez des valeurs par défaut
+# Paramètres du jeu
+BPM = 128  # Battements par minute
+TOLERANCE = 0.225  # Seuil de tolérance en secondes
+
+# Autres paramètres du jeu
 default_hauteur = 800
 default_largeur = 800
 
@@ -21,7 +26,7 @@ pygame.init()
 pygame.mixer.init()
 
 # Charger la musique
-pygame.mixer.music.load('audio.mp3')  # Remplacez 'votre_fichier_audio.mp3' par le nom de votre fichier audio
+pygame.mixer.music.load('audio.mp3')
 
 # Jouer la musique en boucle
 pygame.mixer.music.play(-1)
@@ -57,7 +62,6 @@ class Block:
 # Ajoutez des blocs avec un exemple de bloc mur
 blocks.append(Block(1, 1, "mur"))
 
-
 # Taille du cercle
 circle_radius = 20
 
@@ -67,11 +71,8 @@ GRID_COLOR = (200, 200, 200)
 # Dictionnaire pour suivre l'état des touches
 key_pressed = {pygame.K_LEFT: False, pygame.K_RIGHT: False, pygame.K_UP: False, pygame.K_DOWN: False}
 
-# BPM de la musique
-bpm = 128
-
 # Calculer l'intervalle de battement
-beat_interval = 60000 / bpm  # 60000 ms (1 minute) divisé par le BPM
+beat_interval = 60000 / BPM  # 60000 ms (1 minute) divisé par le BPM
 
 # Suivre le temps du dernier battement
 last_beat_time = 0
@@ -106,7 +107,16 @@ while running:
                 circle_x, circle_y = new_x, new_y
 
                 # Afficher les coordonnées du rond
-                print(f"Coordonnées du rond : ({circle_x}, {circle_y})")
+                # print(f"Coordonnées du rond : ({circle_x}, {circle_y})")
+
+                # Obtenir le temps actuel
+                current_time = pygame.time.get_ticks()
+
+                # Vérifier si l'appui est dans les temps
+                if current_time - last_beat_time <= TOLERANCE * 1000:
+                    print("Dans les temps !")
+                else:
+                    print("Trop tôt ou trop tard.")
 
         if not pygame.key.get_pressed()[key]:
             key_pressed[key] = False
