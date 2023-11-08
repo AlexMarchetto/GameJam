@@ -11,38 +11,47 @@ class Player(AnimatedTile):
         
 
     def move(self, walls):
-        key_pressed = {pygame.K_LEFT: False, pygame.K_RIGHT: False, pygame.K_UP: False, pygame.K_DOWN: False}
+        
 
         key = pygame.key.get_pressed()
         new_rect = self.rect.copy()  # Créez le nouveau rectangle en dehors de la boucle
+    
+        if key[pygame.K_LEFT] and self.is_moving:
+            if self.is_moving:
+                prediction = new_rect.x - 32
+                if not self.check_collisions(prediction,new_rect.y, walls):
+                    new_rect.x -= 32
+            self.is_moving = False
 
-        for key in key_pressed.keys():
+        if key[pygame.K_RIGHT] and self.is_moving:
+            if self.is_moving:
+                prediction = new_rect.x + 32
+                if not self.check_collisions(prediction,new_rect.y, walls):
+                    new_rect.x += 32
+            self.is_moving = False   
 
-            if pygame.key.get_pressed()[key] and not key_pressed[key]:
-                key_pressed[key] = True
-                if key == pygame.K_LEFT:
-                    if self.is_moving:
-                        prediction = new_rect.x - 32
-                        if not self.check_collisions(prediction,new_rect.y, walls):
-                            new_rect.x -= 32
-                            self.is_moving = False
-                if key == pygame.K_RIGHT:
-                    prediction = new_rect.x + 32
-                    if not self.check_collisions(prediction,new_rect.y, walls):
-                        new_rect.x += 32
-                if key == pygame.K_UP:
-                    prediction = new_rect.y - 32
-                    if not self.check_collisions(new_rect.x,prediction, walls):
-                        new_rect.y -= 32
-                if key == pygame.K_DOWN:
-                    prediction = new_rect.y + 32
-                    if not self.check_collisions(new_rect.x,prediction, walls):
-                        new_rect.y += 32
-                
-            if not pygame.key.get_pressed()[key]:
-                self.is_moving = True
+        if key[pygame.K_UP]:
+            if self.is_moving:
+                prediction = new_rect.y - 32
+                if not self.check_collisions(new_rect.x,prediction, walls):
+                    new_rect.y -= 32
+            self.is_moving = False
+
+        if key[pygame.K_DOWN] and self.is_moving:
+            if self.is_moving:
+                prediction = new_rect.y + 32
+                if not self.check_collisions(new_rect.x,prediction, walls):
+                    new_rect.y += 32
+            self.is_moving = False
+               
         self.rect = new_rect
-                                   
+
+        if not any(key):
+            self.is_moving = True
+
+        
+        
+
     def check_collisions(self, player_next_move_x,player_next_move_y, walls):
         for wall in walls:
             if  wall.rect.x == player_next_move_x and wall.rect.y == player_next_move_y:
