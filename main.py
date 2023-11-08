@@ -8,7 +8,7 @@ def main():
         contenue=file.read()
 
     if contenue=="3" or contenue=="F":
-        n1=Niveau(1,"niveau1.py",True)
+        n1=Niveau(1,"test2.py",True)
         n2=Niveau(2,"niveau2.py",True)
         n3=Niveau(3,"niveau3.py",True)
     elif contenue=="2":

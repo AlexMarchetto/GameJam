@@ -3,6 +3,8 @@ import sys
 import pygame.mixer
 import pygame.time
 import random
+import os
+from ProgressBar import ProgressBar
 
 # Paramètres du jeu
 BPM = 128  # Battements par minute
@@ -21,6 +23,8 @@ elif len(sys.argv) == 3:
     WIDTH, HEIGHT = int(sys.argv[1]), int(sys.argv[2])
 
 pygame.init()
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Initialisation de Pygame Mixer
 pygame.mixer.init()
@@ -41,6 +45,10 @@ num_cells = grid_size
 # Couleurs
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+
+# Création de la barre de progression
+progress_bar = ProgressBar(screen, total_time=120, width=600, height=20, x=(WIDTH - 600) // 2, color=GREEN)
 
 # Créez la fenêtre
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -155,7 +163,13 @@ while running:
     pygame.draw.circle(screen, WHITE, (int(circle_center_x), int(circle_center_y)), circle_radius)
 
     pygame.display.update()
+    progress_bar.update()
+    # Vérification si le temps est terminé
+    if progress_bar.progress >= 1.0:
+        running = False
     screen.fill((0, 0, 0))
+    progress_bar.draw()
 
 pygame.quit()
+os.system("python main.py")
 sys.exit()
