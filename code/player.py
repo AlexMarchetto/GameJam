@@ -7,7 +7,7 @@ class Player(AnimatedTile):
         self.rect.x = x
         self.rect.y = y
         self.walls = walls
-
+        self.is_moving = True
         
 
     def move(self, walls):
@@ -18,12 +18,14 @@ class Player(AnimatedTile):
 
         for key in key_pressed.keys():
 
-            if pygame.key.get_pressed()[key]:
+            if pygame.key.get_pressed()[key] and not key_pressed[key]:
                 key_pressed[key] = True
                 if key == pygame.K_LEFT:
-                    prediction = new_rect.x - 32
-                    if not self.check_collisions(prediction,new_rect.y, walls):
-                        new_rect.x -= 32
+                    if self.is_moving:
+                        prediction = new_rect.x - 32
+                        if not self.check_collisions(prediction,new_rect.y, walls):
+                            new_rect.x -= 32
+                            self.is_moving = False
                 if key == pygame.K_RIGHT:
                     prediction = new_rect.x + 32
                     if not self.check_collisions(prediction,new_rect.y, walls):
@@ -36,7 +38,9 @@ class Player(AnimatedTile):
                     prediction = new_rect.y + 32
                     if not self.check_collisions(new_rect.x,prediction, walls):
                         new_rect.y += 32
-
+                
+            if not pygame.key.get_pressed()[key]:
+                self.is_moving = True
         self.rect = new_rect
                                    
     def check_collisions(self, player_next_move_x,player_next_move_y, walls):
