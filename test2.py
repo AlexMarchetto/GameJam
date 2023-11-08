@@ -5,6 +5,7 @@ import pygame.time
 import random
 import os
 from ProgressBar import ProgressBar
+from Book import Book
 
 # Paramètres du jeu
 BPM = 128  # Battements par minute
@@ -42,13 +43,16 @@ grid_cell_size = min(WIDTH, HEIGHT) // grid_size
 # Nombre de cases dans la grille
 num_cells = grid_size
 
+c1=Book(screen,200,200,"book2.png")
+
 # Couleurs
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
+RED = (255,0,0)
 
 # Création de la barre de progression
-progress_bar = ProgressBar(screen, total_time=120, width=600, height=20, x=(WIDTH - 600) // 2, color=GREEN)
+progress_bar = ProgressBar(screen, total_time=30, width=600, height=20, x=(WIDTH - 600) // 2, color=RED)
 
 # Créez la fenêtre
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -161,6 +165,8 @@ while running:
     circle_center_x = (circle_x + 0.5) * grid_cell_size
     circle_center_y = (circle_y + 0.5) * grid_cell_size
     pygame.draw.circle(screen, WHITE, (int(circle_center_x), int(circle_center_y)), circle_radius)
+    
+    c1.draw()
 
     pygame.display.update()
     progress_bar.update()

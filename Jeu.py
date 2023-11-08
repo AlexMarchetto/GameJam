@@ -57,6 +57,19 @@ class Jeu:
         for niveau in self.niveaux:
             nomNiveaux.append("Niveau "+str(niveau.getNum()))
             niveaux_termines.append(niveau.getEstValider())
+
+        #btn image
+        img1=pygame.image.load("img1.png")
+        img2OK=pygame.image.load("img1.png")
+        img2KO=pygame.image.load("img1.png")
+        img3OK=pygame.image.load("img1.png")
+        img3KO=pygame.image.load("img1.png")
+
+        img1 = pygame.transform.scale(img1,(200,200))
+        img2OK = pygame.transform.scale(img2OK,(200,200))
+        img2KO = pygame.transform.scale(img2KO,(200,200))
+        img3OK = pygame.transform.scale(img3OK,(200,200))
+        img3KO = pygame.transform.scale(img3KO,(200,200))
     
         niveau_selectionne=""
 
@@ -73,13 +86,14 @@ class Jeu:
                         en_cours = False
                     # Vérifier si un niveau a été sélectionné
                     for i, (niveau, termine) in enumerate(zip(nomNiveaux, niveaux_termines)):
-                        if termine:
-                            x = largeur_fenetre // 2 - police.size(niveau)[0] // 2
-                            y = 150 + i * 100
-                            if x - 10 < event.pos[0] < x + police.size(niveau)[0] + 10 and y - 10 < event.pos[1] < y + police.size(niveau)[1] + 10:
-                                niveau_selectionne = niveau
-                                print("Niveau sélectionné:", niveau_selectionne)
-                                en_cours = False
+                        rect=img1.get_rect()
+                        x = largeur_fenetre // 3 +40
+                        y = 150 + i * 110
+                        rect.topleft = (x,y)
+                        if rect.collidepoint(event.pos):
+                            if termine:
+                                niveau_selectionne=niveau
+                                en_cours=False
 
             fenetre.fill(blanc)
             # Afficher le fond d'écran
@@ -93,17 +107,20 @@ class Jeu:
             fenetre.blit(bouton_texte, (bouton_reinitialiser.x + 10, bouton_reinitialiser.y + 10))
 
             for i, (niveau, termine) in enumerate(zip(nomNiveaux, niveaux_termines)):
+                x = largeur_fenetre // 3 +40
+                y = 150 + i * 110
                 if termine:
-                    couleur_texte = noir
+                    if niveau=="Niveau 1":
+                        fenetre.blit(img1,(x,y))
+                    elif niveau=="Niveau 2":
+                        fenetre.blit(img2OK,(x,y))
+                    else:
+                        fenetre.blit(img3OK,(x,y))
                 else:
-                    couleur_texte = gris
-
-                texte = police.render(niveau, True, couleur_texte)
-                x = largeur_fenetre // 2 - texte.get_width() // 2
-                y = 150 + i * 100
-                fenetre.blit(texte, (x, y))
-                if termine:
-                    pygame.draw.rect(fenetre, rouge, (x - 10, y - 10, texte.get_width() + 20, texte.get_height() + 20), 2)
+                    if niveau=="Niveau 2":
+                        fenetre.blit(img2KO,(x,y))
+                    else:
+                        fenetre.blit(img3KO,(x,y))
 
             pygame.display.flip()
 
