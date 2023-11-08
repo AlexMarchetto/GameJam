@@ -24,7 +24,7 @@ class Jeu:
         pygame.display.set_caption("Sélection de Niveau")
 
         # Charger une image en tant que fond d'écran
-        fond = pygame.image.load("leo.jpg")
+        fond = pygame.image.load("images/leo.jpg")
         fond = pygame.transform.scale(fond, (largeur_fenetre, hauteur_fenetre))
 
         # Couleurs
@@ -59,11 +59,11 @@ class Jeu:
             niveaux_termines.append(niveau.getEstValider())
 
         #btn image
-        img1=pygame.image.load("img1.png")
-        img2OK=pygame.image.load("img1.png")
-        img2KO=pygame.image.load("img1.png")
-        img3OK=pygame.image.load("img1.png")
-        img3KO=pygame.image.load("img1.png")
+        img1=pygame.image.load("images/img1.png")
+        img2OK=pygame.image.load("images/img1.png")
+        img2KO=pygame.image.load("images/img1.png")
+        img3OK=pygame.image.load("images/img1.png")
+        img3KO=pygame.image.load("images/img1.png")
 
         img1 = pygame.transform.scale(img1,(200,200))
         img2OK = pygame.transform.scale(img2OK,(200,200))

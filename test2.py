@@ -43,7 +43,7 @@ grid_cell_size = min(WIDTH, HEIGHT) // grid_size
 # Nombre de cases dans la grille
 num_cells = grid_size
 
-c1=Book(screen,200,200,"book2.png")
+c1=Book(screen,200,200,"images/book2.png")
 
 # Couleurs
 WHITE = (255, 255, 255)
