@@ -65,7 +65,7 @@ class Level:
                        
 
                     if type == 'player':
-                        self.player = Player(tile_size, x, y, self.walls_sprites)
+                        self.player = Player(tile_size, x, y, self.walls_sprites, self)
                         sprite = self.player 
 
                     if type == 'enemies':
@@ -100,6 +100,8 @@ class Level:
         self.enemy_collision_reverse()
         
         self.enemies_sprites.draw(self.display_surface)
+
+        
 
         
         
