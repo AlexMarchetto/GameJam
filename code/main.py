@@ -25,9 +25,9 @@ while True:
             sys.exit()
     
     screen.fill('black')
-    level.run()
+    level.run(game_surface)
 
-    zoomed_surface = pygame.transform.scale(game_surface, (screen_width*2, screen_height*2))
+    zoomed_surface = pygame.transform.scale(game_surface, (screen_width*5, screen_height*5))
     screen.blit(zoomed_surface, (0, 0))
 
     pygame.display.update()
