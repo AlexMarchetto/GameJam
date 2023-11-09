@@ -27,19 +27,20 @@ def get_font(size):
 
 def play(difficulty):
     pygame.display.set_caption(GAME_NAME)
+    pygame.mixer.music.stop()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            SCREEN.fill('black')
-            level.run(game_surface)
+        SCREEN.fill('black')
+        level.run(game_surface)
 
-            zoomed_surface = pygame.transform.scale(game_surface, (screen_width*5, screen_height*5))
-            SCREEN.blit(zoomed_surface, (0, 0))
+        zoomed_surface = pygame.transform.scale(game_surface, (screen_width*5, screen_height*5))
+        SCREEN.blit(zoomed_surface, (-(32*47),-(32*85)))
 
-            pygame.display.update()
-            clock.tick(60)
+        pygame.display.update()
+        clock.tick(60)
 
 def select_dificulty():
     pygame.display.set_caption(GAME_NAME)
