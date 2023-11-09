@@ -1,7 +1,7 @@
 import pygame,sys
 from settings import *
 from level import Level
-from game_data import level_1
+from game_data import *
 from button import Button
 
 pygame.init()
