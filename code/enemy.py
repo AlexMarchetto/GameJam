@@ -13,22 +13,18 @@ class Enemy(AnimatedTile):
         self.walls = walls
         self.to_bpm = to_bpm
     
-    def move(self, walls, to_bmp):
+    def move(self, walls, doors):
+        if not self.will_collide(walls, doors):
+            self.rect.x += self.speed
         
-        new_rect = self.rect.copy()
-        prediction = new_rect.x - 32
-
-        if not self.check_collisions(prediction,new_rect.y, walls):
-            new_rect.x -= 32
-        self.rect.x += self.speed
-    
-    def check_collisions(self, enemy_next_move_x,enemy_next_move_y, walls):
-        for wall in walls:
-            if  wall.rect.x == enemy_next_move_x and wall.rect.y == enemy_next_move_y:
-                return True
-
+    def will_collide(self, walls, doors):
+        future_rect = self.rect.copy()
+        future_rect.x += self.speed
+        temp_sprite = pygame.sprite.Sprite()
+        temp_sprite.rect = future_rect
+        if pygame.sprite.spritecollideany(temp_sprite, walls) or pygame.sprite.spritecollideany(temp_sprite, doors):
+            return True
         return False
-        
     
     def reverse_image(self): 
         if self.speed < 0:
@@ -37,8 +33,8 @@ class Enemy(AnimatedTile):
     def reverse(self):
         self.speed *= -1 
         
-    def update(self, shift):
+    def update(self, shift, walls, doors):
         self.rect.x += shift
         self.animate()
-        self.move(self.walls,self.to_bpm)
+        self.move(walls, doors)
         self.reverse_image()

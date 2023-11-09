@@ -82,7 +82,7 @@ class Level:
     
     def enemy_collision_reverse(self):
         for enemy in self.enemies_sprites.sprites():
-            if pygame.sprite.spritecollide(enemy,self.walls_sprites,False) or pygame.sprite.spritecollide(enemy,self.doors_sprites,False):
+            if enemy.will_collide(self.walls_sprites, self.doors_sprites):
                 enemy.reverse()
                             
                 
