@@ -74,7 +74,7 @@ class Level:
                         sprite = self.player 
 
                     if type == 'enemies':
-                        sprite = Enemy(tile_size,x,y,self.beat_interval, self.walls_sprites)
+                        sprite = Enemy(tile_size,x,y,self.beat_interval, self.walls_sprites,self.doors_sprites )
                     
                     sprite_group.add(sprite)
 

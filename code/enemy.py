@@ -6,11 +6,12 @@ from random import randint
 clock = pygame.time.Clock()
 
 class Enemy(AnimatedTile):
-    def __init__(self,size,x,y, to_bpm, walls):
+    def __init__(self,size,x,y, to_bpm, walls, doors):
         super().__init__(size,x,y,'../asset/enemy')
         self.rect.y += size - self.image.get_size()[1]
         self.speed = size
         self.walls = walls
+        self.doors = doors
         self.to_bpm = to_bpm
     
     def move(self, walls, doors):
@@ -33,8 +34,8 @@ class Enemy(AnimatedTile):
     def reverse(self):
         self.speed *= -1 
         
-    def update(self, shift, walls, doors):
+    def update(self, shift):
         self.rect.x += shift
         self.animate()
-        self.move(walls, doors)
+        self.move(self.walls, self.doors)
         self.reverse_image()
