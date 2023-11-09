@@ -13,10 +13,18 @@ class Enemy(AnimatedTile):
         self.walls = walls
         self.doors = doors
         self.to_bpm = to_bpm
+        self.last_move_time = pygame.time.get_ticks()
     
     def move(self, walls, doors):
-        if not self.will_collide(walls, doors):
-            self.rect.x += self.speed
+        current_time = pygame.time.get_ticks()
+        elapsed_time = current_time - self.last_move_time
+
+        if elapsed_time >= self.to_bpm:
+            if not self.will_collide(walls, doors):
+                self.rect.x += self.speed
+                self.last_move_time = current_time
+            
+        
         
     def will_collide(self, walls, doors):
         future_rect = self.rect.copy()

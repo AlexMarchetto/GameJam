@@ -1,19 +1,20 @@
 import pygame 
 from support import import_csv_layout, import_cut_graphics
-from settings import tile_size
+from settings import *
 from tile import StaticTile
 from enemy import Enemy
 from player import Player
 from ProgressBar import ProgressBar
 
 class Level:
-    def __init__(self, level_data, surface, bpm):
+    def __init__(self, level_data, surface, bpm, difficulty):
         # General setup
         self.display_surface = surface
         self.world_shift = 0
-        self.beat_interval = (60000 / (bpm*1/60)) * 2
-        self.last_beat_time = 0
+        self.beat_interval = 60000 / bpm
+        self.beat_interval_alert = 60 / bpm
         self.beat_count = 0
+        self.difficulty = difficulty
 
 
         # Ground setup
@@ -30,7 +31,7 @@ class Level:
 
         # player
         player_layout = import_csv_layout(level_data['player'])
-        self.player_sprites = self.create_tile_group(player_layout, 'player' )
+        self.player_sprites = self.create_tile_group(player_layout, 'player')
 
         # enemies
         enemies_layout = import_csv_layout(level_data['enemies'])
@@ -70,7 +71,7 @@ class Level:
                        
 
                     if type == 'player':
-                        self.player = Player(tile_size, x, y, self.walls_sprites, self)
+                        self.player = Player(tile_size, x, y, self.walls_sprites, self,self.display_surface)
                         sprite = self.player 
 
                     if type == 'enemies':
@@ -83,8 +84,7 @@ class Level:
     def enemy_collision_reverse(self):
         for enemy in self.enemies_sprites.sprites():
             if enemy.will_collide(self.walls_sprites, self.doors_sprites):
-                enemy.reverse()
-                            
+                enemy.reverse()                            
                 
 
     def run(self, surface):

@@ -1,17 +1,22 @@
 import pygame
+import time
 from tile import AnimatedTile, StaticTile
 
 
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
 class Player(AnimatedTile):
-    def __init__(self, size, x, y, walls, level):
+    def __init__(self, size, x, y, walls, level, surface):
         from level import Level
         super().__init__(size, x, y, '../asset/player')
         self.rect.x = x
         self.rect.y = y
         self.walls = walls
         self.level = level
-        self.is_moving = True
-        
+        self.is_moving = True       
+        self.metronome_offset = 20
+        self.surface = surface
 
     def move(self, walls):
         
@@ -82,10 +87,7 @@ class Player(AnimatedTile):
         self.rect = new_rect
 
         if not any(key):
-            self.is_moving = True
-
-        
-        
+            self.is_moving = True      
 
     def check_collisions(self, player_next_move_x,player_next_move_y, walls):
         for wall in walls:
@@ -98,5 +100,9 @@ class Player(AnimatedTile):
         self.rect.x += shift
         self.animate()
         self.move(self.walls)
+        square_size = 16
+        square_rect = pygame.Rect(self.rect.x - self.metronome_offset, self.rect.y + self.rect.height, square_size, square_size)
+        pygame.draw.rect(self.surface, BLACK, square_rect)
         
+
        

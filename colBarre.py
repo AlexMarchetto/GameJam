@@ -1,108 +1,56 @@
 import pygame
-import sys
+import time
 
 # Initialisation de Pygame
 pygame.init()
 
+# Paramètres du métronome
+bpm = 83  # Tempo en battements par minute
+beat_interval = 60 / bpm  # Intervalle entre chaque temps fort en secondes
+
 # Couleurs
-BLANC = (255, 255, 255)
-NOIR = (0, 0, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
-# Dimensions de la fenêtre
-largeur, hauteur = 800, 600
+# Initialisation de la fenêtre Pygame
+width, height = 400, 400
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Metronome')
 
-# Création de la fenêtre
-fenetre = pygame.display.set_mode((largeur, hauteur))
-pygame.display.set_caption("Collision de barres")
+# Horloge Pygame
+clock = pygame.time.Clock()
 
-# Charger les images des barres
-image_barre_gauche = pygame.image.load("Barre.png")
-image_barre_droite = pygame.image.load("Barre.png")
+# Variables pour contrôler l'affichage du carré noir
+show_square = False
+last_beat_time = time.time()
 
-# Position initiale des barres
-pos_barre_gauche = [50, hauteur // 2 - 25]
-pos_barre_droite = [largeur - 70, hauteur // 2 - 25]
-
-# Vitesses de déplacement des barres
-vitesse_gauche = 5
-vitesse_droite = 5
-
-# Compteur de collisions
-compteur_collisions = 0
-
-# Score
-score = 0
-
-# Police pour le texte du compteur
-font = pygame.font.Font(None, 36)
-
-# Variable pour vérifier si la touche "espace" est enfoncée
-espace_appuye = False
-
-# Boucle de jeu
+# Boucle principale
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Vérification de la collision entre les barres
-    collision = pygame.Rect(*pos_barre_gauche, image_barre_gauche.get_width(), image_barre_gauche.get_height()).colliderect(
-        pygame.Rect(*pos_barre_droite, image_barre_droite.get_width(), image_barre_droite.get_height()))
+    # Vérifie le temps écoulé depuis le dernier temps fort
+    elapsed_time = time.time() - last_beat_time
 
-    # Si les barres sont à 20 pixels d'écart, augmenter le score lorsque la touche "espace" est enfoncée
-    touches = pygame.key.get_pressed()
-    if collision or abs(pos_barre_gauche[0] + image_barre_gauche.get_width() - pos_barre_droite[0]) <= 75:
-        if touches[pygame.K_SPACE] and not espace_appuye:
-            score += 1
-            espace_appuye = True
-        elif not touches[pygame.K_SPACE]:
-            espace_appuye = False
-    else:
-        # Réinitialiser le jeu si la touche "espace" est enfoncée au mauvais moment
-        if touches[pygame.K_SPACE] and not espace_appuye:
-            pos_barre_gauche = [50, hauteur // 2 - 25]
-            pos_barre_droite = [largeur - 70, hauteur // 2 - 25]
-            score = 0
-            compteur_collisions = 0
-            espace_appuye = True
-        elif not touches[pygame.K_SPACE]:
-            espace_appuye = False
+    # Si l'intervalle est atteint, bascule l'affichage du carré noir
+    if elapsed_time >= beat_interval:
+        show_square = not show_square
+        last_beat_time = time.time()
 
-    # Déplacement des barres
-    pos_barre_gauche[0] += vitesse_gauche
-    pos_barre_droite[0] -= vitesse_droite
+    # Efface l'écran
+    screen.fill(WHITE)
 
-    # Remettre les barres à leur position initiale si elles sont en collision
-    if collision:
-        compteur_collisions += 1
-        pos_barre_gauche = [50, hauteur // 2 - 25]
-        pos_barre_droite = [largeur - 70, hauteur // 2 - 25]
+    # Affiche le carré noir si nécessaire
+    if show_square:
+        square_size = 50
+        square_rect = pygame.Rect((width - square_size) // 2, (height - square_size) // 2, square_size, square_size)
+        pygame.draw.rect(screen, BLACK, square_rect)
 
-    # Effacement de l'écran
-    fenetre.fill(BLANC)
-
-    # Dessin des barres
-    image_barre_gauche = pygame.transform.scale(image_barre_gauche, (12,64))
-    image_barre_droite = pygame.transform.scale(image_barre_droite, (12,64))
-
-    fenetre.blit(image_barre_gauche, pos_barre_gauche)
-    fenetre.blit(image_barre_droite, pos_barre_droite)
-
-    # Affichage du compteur de collisions
-    texte = font.render(f"Collisions : {compteur_collisions}", True, NOIR)
-    fenetre.blit(texte, (10, 10))
-
-    # Affichage du score
-    texte_score = font.render(f"Score : {score}", True, NOIR)
-    fenetre.blit(texte_score, (largeur - 160, 10))
-
-    # Mise à jour de l'écran
+    # Met à jour l'affichage
     pygame.display.flip()
 
-    # Limiter la vitesse de la boucle
-    pygame.time.delay(9)
 
-# Quitter Pygame
+# Quitte Pygame
 pygame.quit()
-sys.exit()
