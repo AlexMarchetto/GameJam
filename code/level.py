@@ -65,7 +65,7 @@ class Level:
                        
 
                     if type == 'player':
-                        self.player = Player(tile_size, x, y, self.walls_sprites)
+                        self.player = Player(tile_size, x, y, self.walls_sprites, self)
                         sprite = self.player 
 
                     if type == 'enemies':
@@ -82,24 +82,25 @@ class Level:
                             
                 
 
-    def run(self):
+    def run(self, surface):
         self.ground_sprites.update(self.world_shift)
-        self.ground_sprites.draw(self.display_surface)
+        self.ground_sprites.draw(surface)
 
         self.walls_sprites.update(self.world_shift)
-        self.walls_sprites.draw(self.display_surface)
+        self.walls_sprites.draw(surface)
 
         self.doors_sprites.update(self.world_shift)
-        self.doors_sprites.draw(self.display_surface)
+        self.doors_sprites.draw(surface)
 
-        #self.player.move(self.walls_sprites)
         self.player_sprites.update(self.world_shift)
-        self.player_sprites.draw(self.display_surface)
+        self.player_sprites.draw(surface)
 
         self.enemies_sprites.update(self.world_shift)
         self.enemy_collision_reverse()
         
-        self.enemies_sprites.draw(self.display_surface)
+        self.enemies_sprites.draw(surface)
+
+        
 
         
         

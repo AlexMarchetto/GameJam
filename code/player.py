@@ -1,44 +1,92 @@
 import pygame
 from tile import AnimatedTile, StaticTile
 
+
 class Player(AnimatedTile):
-    def __init__(self, size, x, y, walls):
+    def __init__(self, size, x, y, walls, level):
+        from level import Level
         super().__init__(size, x, y, '../asset/player')
         self.rect.x = x
         self.rect.y = y
         self.walls = walls
-
+        self.level = level
+        self.is_moving = True
         
 
     def move(self, walls):
-        key_pressed = {pygame.K_LEFT: False, pygame.K_RIGHT: False, pygame.K_UP: False, pygame.K_DOWN: False}
+        
 
         key = pygame.key.get_pressed()
         new_rect = self.rect.copy()  # Créez le nouveau rectangle en dehors de la boucle
+    
+        if key[pygame.K_LEFT] and self.is_moving:
+            if self.is_moving:
+                prediction = new_rect.x - 32
+                if not self.check_collisions(prediction,new_rect.y, walls):
+                    for sprite in self.level.ground_sprites:
+                        sprite.rect.x += 32
+                    for sprite in self.level.walls_sprites:
+                        sprite.rect.x += 32
+                    for sprite in self.level.doors_sprites:
+                        sprite.rect.x += 32
+                    for sprite in self.level.enemies_sprites:
+                        sprite.rect.x += 32
+                    # new_rect.x -= 32
+            self.is_moving = False
 
-        for key in key_pressed.keys():
+        if key[pygame.K_RIGHT] and self.is_moving:
+            if self.is_moving:
+                prediction = new_rect.x + 32
+                if not self.check_collisions(prediction,new_rect.y, walls):
+                    for sprite in self.level.ground_sprites:
+                        sprite.rect.x -= 32
+                    for sprite in self.level.walls_sprites:
+                        sprite.rect.x -= 32
+                    for sprite in self.level.doors_sprites:
+                        sprite.rect.x -= 32
+                    for sprite in self.level.enemies_sprites:
+                        sprite.rect.x -= 32
+                    # new_rect.x += 32
+            self.is_moving = False   
 
-            if pygame.key.get_pressed()[key]:
-                key_pressed[key] = True
-                if key == pygame.K_LEFT:
-                    prediction = new_rect.x - 32
-                    if not self.check_collisions(prediction,new_rect.y, walls):
-                        new_rect.x -= 32
-                if key == pygame.K_RIGHT:
-                    prediction = new_rect.x + 32
-                    if not self.check_collisions(prediction,new_rect.y, walls):
-                        new_rect.x += 32
-                if key == pygame.K_UP:
-                    prediction = new_rect.y - 32
-                    if not self.check_collisions(new_rect.x,prediction, walls):
-                        new_rect.y -= 32
-                if key == pygame.K_DOWN:
-                    prediction = new_rect.y + 32
-                    if not self.check_collisions(new_rect.x,prediction, walls):
-                        new_rect.y += 32
+        if key[pygame.K_UP]:
+            if self.is_moving:
+                prediction = new_rect.y - 32
+                if not self.check_collisions(new_rect.x,prediction, walls):
+                    for sprite in self.level.ground_sprites:
+                        sprite.rect.y += 32
+                    for sprite in self.level.walls_sprites:
+                        sprite.rect.y += 32
+                    for sprite in self.level.doors_sprites:
+                        sprite.rect.y += 32
+                    for sprite in self.level.enemies_sprites:
+                        sprite.rect.y += 32
+                    # new_rect.y -= 32
+            self.is_moving = False
 
+        if key[pygame.K_DOWN] and self.is_moving:
+            if self.is_moving:
+                prediction = new_rect.y + 32
+                if not self.check_collisions(new_rect.x,prediction, walls):
+                    for sprite in self.level.ground_sprites:
+                        sprite.rect.y -= 32
+                    for sprite in self.level.walls_sprites:
+                        sprite.rect.y -= 32
+                    for sprite in self.level.doors_sprites:
+                        sprite.rect.y -= 32
+                    for sprite in self.level.enemies_sprites:
+                        sprite.rect.y -= 32
+                    # new_rect.y += 32
+            self.is_moving = False
+               
         self.rect = new_rect
-                                   
+
+        if not any(key):
+            self.is_moving = True
+
+        
+        
+
     def check_collisions(self, player_next_move_x,player_next_move_y, walls):
         for wall in walls:
             if  wall.rect.x == player_next_move_x and wall.rect.y == player_next_move_y:
