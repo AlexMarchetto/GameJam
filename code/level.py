@@ -4,6 +4,7 @@ from settings import tile_size
 from tile import StaticTile
 from enemy import Enemy
 from player import Player
+from ProgressBar import ProgressBar
 
 class Level:
     def __init__(self, level_data, surface, bpm):
@@ -30,9 +31,13 @@ class Level:
         # player
         player_layout = import_csv_layout(level_data['player'])
         self.player_sprites = self.create_tile_group(player_layout, 'player' )
+
         # enemies
         enemies_layout = import_csv_layout(level_data['enemies'])
         self.enemies_sprites = self.create_tile_group(enemies_layout, 'enemies')
+
+        #Progress Bar
+        self.pg=ProgressBar(self.display_surface,60,width=600,height=40,x=50)
 
 
 
@@ -99,6 +104,9 @@ class Level:
         self.enemy_collision_reverse()
         
         self.enemies_sprites.draw(surface)
+
+        self.pg.update()
+        self.pg.draw()
 
         
 
