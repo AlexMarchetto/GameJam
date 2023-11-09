@@ -1,37 +1,28 @@
-from Niveau import Niveau
-from Jeu import Jeu
+import pygame,sys
+from settings import *
+from level import Level
+from game_data import level_1
 
-def main():
-    print("Récupération des données")
+pygame.init()
+screen = pygame.display.set_mode((screen_width,screen_height))
+clock = pygame.time.Clock()
+bpm = 50
+level = Level(level_1, screen, bpm)
 
-    Levelfile1="test2.py"
-    Levelfile2="test2.py"
-    Levelfile3="test2.py"
+# Charger la musique
+pygame.mixer.music.load('../audio.mp3')
 
-    with open("data.txt") as file:
-        contenue=file.read()
+# Jouer la musique en boucle
+pygame.mixer.music.play(-1)
 
-    if contenue=="3" or contenue=="F":
-        n1=Niveau(1,Levelfile1,True)
-        n2=Niveau(2,Levelfile2,True)
-        n3=Niveau(3,Levelfile3,True)
-    elif contenue=="2":
-        n1=Niveau(1,Levelfile1,True)
-        n2=Niveau(2,Levelfile2,True)
-        n3=Niveau(3,Levelfile3,False)    
-    else:
-        f = open("data.txt","w")
-        f.write("1")
-        f.close()
-        n1=Niveau(1,Levelfile1,True)
-        n2=Niveau(2,Levelfile2,False)
-        n3=Niveau(3,Levelfile3,False)
+while True:
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    
+    screen.fill('black')
+    level.run()
 
-    niveaux=[n1,n2,n3]
-    game=Jeu(niveaux)
-    if contenue=="F":
-        game.setTrueEstFini()
-    game.interface()
-
-main()
-
+    pygame.display.update()
+    clock.tick(60)
