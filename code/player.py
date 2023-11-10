@@ -1,5 +1,6 @@
 import pygame, time, sys
 from tile import AnimatedTile, StaticTile
+from game_data import *
 
 
 BLACK = (0, 0, 0)
@@ -7,19 +8,20 @@ WHITE = (255, 255, 255)
 
 
 class Player(AnimatedTile):
-    def __init__(self, size, x, y, walls, level, surface, tolerance):
+    def __init__(self, size, x, y, level):
         from level import Level
         super().__init__(size, x, y, '../asset/player')
         self.rect.x = x
         self.rect.y = y
         self.move_speed = 32
-        self.walls = walls
+        self.walls = level.walls_sprites
         self.level = level
+        self.doors = level.doors_sprites
         self.is_moving = True       
         self.metronome_offset = 20
-        self.surface = surface
+        self.surface = level.display_surface
         
-        self.tolerance = tolerance
+        self.tolerance = level.tolerance
         self.beat_interval = self.level.beat_interval
         self.last_beat_time = 0
         self.beat_count = self.level.beat_count
@@ -50,7 +52,7 @@ class Player(AnimatedTile):
         if key[pygame.K_LEFT]:
             if self.is_moving:
                 prediction = new_rect.x - self.move_speed
-                if not self.check_collisions(prediction,new_rect.y, walls):
+                if not self.check_collisions_walls(prediction,new_rect.y):
                     for sprite in self.level.ground_sprites:
                         sprite.rect.x += self.move_speed
                     for sprite in self.level.walls_sprites:
@@ -72,7 +74,7 @@ class Player(AnimatedTile):
         if key[pygame.K_RIGHT] and self.is_moving:
             if self.is_moving:
                 prediction = new_rect.x + self.move_speed
-                if not self.check_collisions(prediction,new_rect.y, walls):
+                if not self.check_collisions_walls(prediction,new_rect.y):
                     for sprite in self.level.ground_sprites:
                         sprite.rect.x -= self.move_speed
                     for sprite in self.level.walls_sprites:
@@ -94,7 +96,7 @@ class Player(AnimatedTile):
         if key[pygame.K_UP]:
             if self.is_moving:
                 prediction = new_rect.y - self.move_speed
-                if not self.check_collisions(new_rect.x,prediction, walls):
+                if not self.check_collisions_walls(new_rect.x,prediction):
                     for sprite in self.level.ground_sprites:
                         sprite.rect.y += self.move_speed
                     for sprite in self.level.walls_sprites:
@@ -117,7 +119,7 @@ class Player(AnimatedTile):
         if key[pygame.K_DOWN] and self.is_moving:
             if self.is_moving:
                 prediction = new_rect.y + self.move_speed
-                if not self.check_collisions(new_rect.x,prediction, walls):
+                if not self.check_collisions_walls(new_rect.x,prediction):
                     for sprite in self.level.ground_sprites:
                         sprite.rect.y -= self.move_speed
                     for sprite in self.level.walls_sprites:
@@ -155,11 +157,34 @@ class Player(AnimatedTile):
         if not any(key):
             self.is_moving = True      
 
-    def check_collisions(self, player_next_move_x,player_next_move_y, walls):
-        for wall in walls:
+    def check_collisions_walls(self, player_next_move_x,player_next_move_y):
+        for wall in self.walls:
             if  wall.rect.x == player_next_move_x and wall.rect.y == player_next_move_y:
                 return True
+        for index, door in enumerate(self.doors):
+            if door.rect.x == player_next_move_x and door.rect.y == player_next_move_y:
+                from level import Level
+                if index == 5:
+                    Level(level_1, self.surface, 130, 3, 0.5).run(self.level.surface)
+                    pass
+                elif index == 1:
+                    # Code for index 1
+                    pass
+                elif index == 2:
+                    # Code for index 2
+                    pass
+                elif index == 3:
+                    # Code for index 3
+                    pass
+                elif index == 4:
+                    # Code for index 4
+                    pass
+                
+                print("Index de la porte :", index)
+                return True
         return False
+    
+    #def check_collisions_doors(self,player_next_move_x, player_next_move_y, doors):
     
     
             

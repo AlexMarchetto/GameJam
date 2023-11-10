@@ -6,6 +6,7 @@ from enemy import Enemy
 from player import Player
 from ProgressBar import ProgressBar
 
+
 class Level():
     def __init__(self, level_data, surface, bpm, difficulty, tolerance):
         self.display_surface = surface
@@ -90,7 +91,7 @@ class Level():
                        
 
                     if type == 'player':
-                        self.player = Player(tile_size, x, y, self.walls_sprites, self,self.display_surface, self.tolerance)
+                        self.player = Player(tile_size, x, y, self)
                         sprite = self.player 
 
                     if type == 'enemies':
