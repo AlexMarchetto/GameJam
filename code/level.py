@@ -95,7 +95,7 @@ class Level():
                         sprite = self.player 
 
                     if type == 'enemies':
-                        sprite = Enemy(tile_size,x,y,self.beat_interval, self.walls_sprites,self.doors_sprites )
+                        sprite = Enemy(tile_size,x,y,self.beat_interval, self.walls_sprites,self.doors_sprites,self)
 
                     
                     
@@ -136,6 +136,14 @@ class Level():
         self.pg.update()
         self.pg.draw()
 
+    def close(self):
+        self.ground_sprites.empty()
+        self.walls_sprites.empty()
+        self.doors_sprites.empty()
+        self.player_sprites.empty()
+        self.enemies_sprites.empty()
+        self.table_sprites.empty()
+        self.book_sprites.empty()
 
-        
-        
+        # Reset the world shift
+        self.world_shift = 0

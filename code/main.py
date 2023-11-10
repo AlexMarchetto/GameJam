@@ -59,10 +59,10 @@ def play(difficulty):
         SCREEN.fill('black')
         level.run(game_surface)
 
-        zoomed_surface = pygame.transform.scale(game_surface, (screen_width*5, screen_height*5))
-        #zoomed_surface = pygame.transform.scale(game_surface, (screen_width, screen_height))
-        SCREEN.blit(zoomed_surface, (-(32*47),-(32*85)))
-        #SCREEN.blit(zoomed_surface, (0,0))
+        #zoomed_surface = pygame.transform.scale(game_surface, (screen_width*5, screen_height*5))
+        zoomed_surface = pygame.transform.scale(game_surface, (screen_width, screen_height))
+        #SCREEN.blit(zoomed_surface, (-(32*47),-(32*85)))
+        SCREEN.blit(zoomed_surface, (0,0))
 
 
 

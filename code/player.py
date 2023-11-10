@@ -9,7 +9,6 @@ WHITE = (255, 255, 255)
 
 class Player(AnimatedTile):
     def __init__(self, size, x, y, level):
-        from level import Level
         super().__init__(size, x, y, '../asset/player')
         self.rect.x = x
         self.rect.y = y
@@ -32,11 +31,12 @@ class Player(AnimatedTile):
 
     #def game_over(self):
 
-
     def loose_motivation(self):
         self.motivation -= 2
         # if self.motivation <= 0:
-            #game_over()
+            #game_over()    
+        pygame.mixer.Channel(0).set_volume(1)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('../asset/sfx/hurt.mp3'))
         print(f"Motivation : {str(self.motivation).zfill(2)}", end='\r')
 
     def win_motivation(self):
@@ -165,7 +165,9 @@ class Player(AnimatedTile):
             if door.rect.x == player_next_move_x and door.rect.y == player_next_move_y:
                 from level import Level
                 if index == 5:
-                    Level(level_1, self.surface, 130, 3, 0.5).run(self.level.surface)
+                    self.level.close()
+                    level_1_1 = Level(trial_1_1, self.surface, 130, 3, 0.5)
+                    level_1_1.run(self.surface)
                     pass
                 elif index == 1:
                     # Code for index 1
@@ -181,6 +183,11 @@ class Player(AnimatedTile):
                     pass
                 
                 print("Index de la porte :", index)
+                return True
+        for enemy in self.level.enemies_sprites:
+            if enemy.rect.x == player_next_move_x and enemy.rect.y == player_next_move_y:
+                self.loose_motivation()
+                
                 return True
         return False
     
