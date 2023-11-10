@@ -26,6 +26,7 @@ tolerance = args.tol
 pygame.init()
 SCREEN = pygame.display.set_mode((screen_width,screen_height))
 BG = pygame.image.load("../asset/BackgroundMenu.png")
+BG = pygame.transform.scale(BG,(screen_width,screen_height))
 GAME_NAME = "School'n'Beats"
 pygame.display.set_caption(GAME_NAME)
 
@@ -43,10 +44,6 @@ game_surface = pygame.Surface((screen_width, screen_height))
 
 def get_font(size):
     return pygame.font.Font("../asset/MerchantCopy.ttf", size)
-
-def splas_screen():
-        pygame.display.set_caption(GAME_NAME)
-        SCREEN.blit(BG,(0,0))
 
 def play(difficulty):
     pygame.display.set_caption(GAME_NAME)
@@ -116,19 +113,32 @@ def credit():
         CREDIT_MOUSE_POS = pygame.mouse.get_pos()
 
         CREDIT_TEXT = get_font(150).render("Crédits", True, "#b68f40")
-        CREDIT_RECT = CREDIT_TEXT.get_rect(center=(screen_width/2,200))
+        CREDIT_RECT = CREDIT_TEXT.get_rect(center=(screen_width/2,100))
 
-        CREDIT_TEXT2 = get_font(150).render("Créer par Nacer, Angel and Alex", True, "#1d8738")
-        CREDIT_RECT2 = CREDIT_TEXT2.get_rect(center=(screen_width/2,500))
+        CREDIT_TEXT2 = get_font(100).render("Créer par :", True, "#1d8738")
+        CREDIT_RECT2 = CREDIT_TEXT2.get_rect(center=(screen_width/2-50,200))
 
-        CREDIT_TEXT3 = get_font(150).render("Font : Merchant Copy", True, "#1d8738")
-        CREDIT_RECT3 = CREDIT_TEXT2.get_rect(center=(screen_width/2,600))
+        CREDIT_TEXT3 = get_font(100).render("Nacer BERKANE", True, "#1d8738")
+        CREDIT_RECT3 = CREDIT_TEXT2.get_rect(center=(screen_width/2,300))
+        
+        CREDIT_TEXT4= get_font(100).render("Angel GIOANNI", True, "#1d8738")
+        CREDIT_RECT4 = CREDIT_TEXT2.get_rect(center=(screen_width/2,400))
 
-        MENU_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(screen_width/2,900), text_input="MENU", font=get_font(150), base_color="#d7fcd4", hovering_color="White")
+        CREDIT_TEXT5 = get_font(100).render("Alex MARCHETTO", True, "#1d8738")
+        CREDIT_RECT5 = CREDIT_TEXT2.get_rect(center=(screen_width/2,500))
+
+        CREDIT_TEXT6 = get_font(100).render("Font : Merchant Copy", True, "#1d8738")
+        CREDIT_RECT6 = CREDIT_TEXT2.get_rect(center=(screen_width/2-50,600))
+
+        MENU_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(screen_width/2,700), text_input="MENU", font=get_font(150), base_color="#d7fcd4", hovering_color="White")
 
         SCREEN.blit(CREDIT_TEXT,CREDIT_RECT)
         SCREEN.blit(CREDIT_TEXT2,CREDIT_RECT2)
         SCREEN.blit(CREDIT_TEXT3,CREDIT_RECT3)
+        SCREEN.blit(CREDIT_TEXT4,CREDIT_RECT4)
+        SCREEN.blit(CREDIT_TEXT5,CREDIT_RECT5)
+        SCREEN.blit(CREDIT_TEXT6,CREDIT_RECT6)
+    
         MENU_BUTTON.changeColor(CREDIT_MOUSE_POS)
         MENU_BUTTON.update(SCREEN)
 
@@ -151,37 +161,52 @@ def rules_menu():
         RULES_TEXT = get_font(150).render("REGLES", True, "#b68f40")
         RULES_RECT = RULES_TEXT.get_rect(center=(screen_width/2,100))
 
-        R1_TEXT = get_font(40).render("Dans ce jeu palpitant, vous devrez naviguer a travers les couloirs animes de l'IUT2 au son de la musique,", True, "#FFFFFF")
-        R1_RECT = R1_TEXT.get_rect(center=(screen_width/2,250))
+        R1_TEXT = get_font(40).render("Dans ce jeu palpitant, vous devrez naviguer a travers ", True, "#1d8738")
+        R1_RECT = R1_TEXT.get_rect(center=(screen_width/2,150))
 
-        R2_TEXT = get_font(40).render("tout en collectant un nombre defini de cours eparpilles sur la carte.", True, "#FFFFFF")
-        R2_RECT = R2_TEXT.get_rect(center=(screen_width/2,310))
+        R2_TEXT = get_font(40).render(" les couloirs animes de l'IUT2 au son de la musique,", True, "#1d8738")
+        R2_RECT = R2_TEXT.get_rect(center=(screen_width/2,175))
 
-        R3_TEXT = get_font(40).render("Cependant, gardez toujours le rythme,", True, "#FFFFFF")
-        R3_RECT = R3_TEXT.get_rect(center=(screen_width/2,370))
+        R3_TEXT = get_font(40).render("tout en collectant un nombre defini de cours eparpilles sur la carte.", True, "#1d8738")
+        R3_RECT = R3_TEXT.get_rect(center=(screen_width/2,200))
 
-        R4_TEXT = get_font(40).render("car votre niveau de motivation depend de votre synchronisation parfaite avec la mélodie envoutante qui vous accompagne.", True, "#FFFFFF")
-        R4_RECT = R4_TEXT.get_rect(center=(screen_width/2,430))
+        R4_TEXT = get_font(40).render("Cependant, gardez toujours le rythme,", True, "#1d8738")
+        R4_RECT = R4_TEXT.get_rect(center=(screen_width/2,225))
 
-        R5_TEXT = get_font(40).render("Les collisions avec d'autres etudiants sont a eviter a tout prix, car cela pourrait egalement saper votre enthousiasme.", True, "#FFFFFF")
-        R5_RECT = R5_TEXT.get_rect(center=(screen_width/2,490))
+        R5_TEXT = get_font(40).render("car votre niveau de motivation depend de votre", True, "#1d8738")
+        R5_RECT = R5_TEXT.get_rect(center=(screen_width/2,250))
 
-        R6_TEXT = get_font(40).render("Si votre motivation atteint le triste score de zero,", True, "#FFFFFF")
-        R6_RECT = R6_TEXT.get_rect(center=(screen_width/2,550))
+        R6_TEXT = get_font(40).render("votre synchronisation parfaite avec la mélodie envoutante qui vous accompagne.", True, "#1d8738")
+        R6_RECT = R6_TEXT.get_rect(center=(screen_width/2,270))
 
-        R7_TEXT = get_font(40).render("ou si le temps imparti s'ecoule avant que vous n'ayez amassé tous les cours necessaires,", True, "#FFFFFF")
-        R7_RECT = R7_TEXT.get_rect(center=(screen_width/2,610))
+        R7_TEXT = get_font(40).render("Les collisions avec d'autres etudiants sont a eviter a tout prix,", True, "#1d8738")
+        R7_RECT = R7_TEXT.get_rect(center=(screen_width/2,300))
+        
+        R8_TEXT = get_font(40).render("car cela pourrait egalement saper votre enthousiasme.", True, "#1d8738")
+        R8_RECT = R8_TEXT.get_rect(center=(screen_width/2,325))
 
-        R8_TEXT = get_font(40).render("la partie sera malheureusement terminee.", True, "#FFFFFF")
-        R8_RECT = R8_TEXT.get_rect(center=(screen_width/2,670))
+        R9_TEXT = get_font(40).render("Si votre motivation atteint le triste score de zero,", True, "#1d8738")
+        R9_RECT = R9_TEXT.get_rect(center=(screen_width/2,350))
 
-        R9_TEXT = get_font(40).render("Le deplacement sur la carte s'effectue avec les fleches directionelles du clavier", True, "#FFFFFF")
-        R9_RECT = R9_TEXT.get_rect(center=(screen_width/2,720))
+        R10_TEXT = get_font(40).render("ou si le temps imparti s'ecoule avant que vous", True, "#1d8738")
+        R10_RECT = R10_TEXT.get_rect(center=(screen_width/2,375))
 
-        R10_TEXT = get_font(40).render("Bonne chance !", True, "#FFFFFF")
-        R10_RECT = R10_TEXT.get_rect(center=(screen_width/2,800))
+        R11_TEXT = get_font(40).render("n'ayez amassé tous les cours necessaires,", True, "#1d8738")
+        R11_RECT = R11_TEXT.get_rect(center=(screen_width/2,400))
 
-        MENU_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(960,930), text_input="MENU", font=get_font(150), base_color="#d7fcd4", hovering_color="White")
+        R12_TEXT = get_font(40).render("la partie sera malheureusement terminee.", True, "#1d8738")
+        R12_RECT = R12_TEXT.get_rect(center=(screen_width/2,425))
+
+        R13_TEXT = get_font(40).render("Le deplacement sur la carte s'effectue avec ", True, "#1d8738")
+        R13_RECT = R13_TEXT.get_rect(center=(screen_width/2,450))
+
+        R14_TEXT = get_font(40).render("les fleches directionelles du clavier", True, "#1d8738")
+        R14_RECT = R14_TEXT.get_rect(center=(screen_width/2,475))
+
+        R15_TEXT = get_font(40).render("Bonne chance !", True, "#1d8738")
+        R15_RECT = R15_TEXT.get_rect(center=(screen_width/2,500))
+
+        MENU_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(screen_width/2,700), text_input="MENU", font=get_font(150), base_color="#d7fcd4", hovering_color="White")
 
         SCREEN.blit(RULES_TEXT,RULES_RECT)
         SCREEN.blit(R1_TEXT,R1_RECT)
@@ -194,6 +219,11 @@ def rules_menu():
         SCREEN.blit(R8_TEXT,R8_RECT)
         SCREEN.blit(R9_TEXT,R9_RECT)
         SCREEN.blit(R10_TEXT,R10_RECT)
+        SCREEN.blit(R11_TEXT,R11_RECT)
+        SCREEN.blit(R12_TEXT,R12_RECT)
+        SCREEN.blit(R13_TEXT,R13_RECT)
+        SCREEN.blit(R14_TEXT,R14_RECT)
+        SCREEN.blit(R15_TEXT,R15_RECT)
 
         MENU_BUTTON.changeColor(RULES_MOUSE_POS)
         MENU_BUTTON.update(SCREEN)
@@ -216,13 +246,13 @@ def main_menu():
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(150).render("School'n'Beats", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(screen_width/2,200))
+        MENU_TEXT = get_font(100).render("School'n'Beats", True, "#b68f40")
+        MENU_RECT = MENU_TEXT.get_rect(center=(screen_width/2,100))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(screen_width/2,400), text_input="JOUER", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
-        CREDIT_BUTTON = Button(image=pygame.image.load("../asset/Button.png"),pos=(screen_width/2,550), text_input="CREDITS", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("../asset/Button.png"),pos=(screen_width/2,850), text_input="QUITTER", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
-        RULES_BUTTON = Button(image=pygame.image.load("../asset/Button.png"),pos=(screen_width/2,700), text_input="REGLES", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
+        PLAY_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(screen_width/2,200), text_input="JOUER", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
+        CREDIT_BUTTON = Button(image=pygame.image.load("../asset/Button.png"),pos=(screen_width/2,350), text_input="CREDITS", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
+        QUIT_BUTTON = Button(image=pygame.image.load("../asset/Button.png"),pos=(screen_width/2,650), text_input="QUITTER", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
+        RULES_BUTTON = Button(image=pygame.image.load("../asset/Button.png"),pos=(screen_width/2,500), text_input="REGLES", font=get_font(100), base_color="#d7fcd4", hovering_color="White")
         
         SCREEN.blit(MENU_TEXT,MENU_RECT)
 
