@@ -26,6 +26,10 @@ game_surface = pygame.Surface((screen_width, screen_height))
 def get_font(size):
     return pygame.font.Font("../asset/MerchantCopy.ttf", size)
 
+def splas_screen():
+        pygame.display.set_caption(GAME_NAME)
+        SCREEN.blit(BG,(0,0))
+
 def play(difficulty):
     pygame.display.set_caption(GAME_NAME)
     pygame.mixer.music.stop()
@@ -93,13 +97,17 @@ def credit():
         CREDIT_TEXT = get_font(150).render("Crédits", True, "#b68f40")
         CREDIT_RECT = CREDIT_TEXT.get_rect(center=(screen_width/2,200))
 
-        CREDIT_TEXT2 = get_font(150).render("Créer par Nacer, Angel and Alex", True, "#FFFFFF")
+        CREDIT_TEXT2 = get_font(150).render("Créer par Nacer, Angel and Alex", True, "#1d8738")
         CREDIT_RECT2 = CREDIT_TEXT2.get_rect(center=(screen_width/2,500))
+
+        CREDIT_TEXT3 = get_font(150).render("Font : Merchant Copy", True, "#1d8738")
+        CREDIT_RECT3 = CREDIT_TEXT2.get_rect(center=(screen_width/2,600))
 
         MENU_BUTTON = Button(image=pygame.image.load("../asset/Button.png"), pos=(screen_width/2,900), text_input="MENU", font=get_font(150), base_color="#d7fcd4", hovering_color="White")
 
         SCREEN.blit(CREDIT_TEXT,CREDIT_RECT)
         SCREEN.blit(CREDIT_TEXT2,CREDIT_RECT2)
+        SCREEN.blit(CREDIT_TEXT3,CREDIT_RECT3)
         MENU_BUTTON.changeColor(CREDIT_MOUSE_POS)
         MENU_BUTTON.update(SCREEN)
 
