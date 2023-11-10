@@ -87,7 +87,7 @@ class Level():
                        
 
                     if type == 'player':
-                        self.player = Player(tile_size, x, y, self.walls_sprites,self.table_sprites, self,self.display_surface)
+                        self.player = Player(tile_size, x, y, self.walls_sprites, self,self.display_surface)
                         sprite = self.player 
 
                     if type == 'enemies':
