@@ -18,6 +18,8 @@ class Level():
         self.unlock_door = False
         self.tolerance = tolerance
 
+        self.font = pygame.font.Font(None,24)
+
         # Ground setup
         grounds_layout = import_csv_layout(level_data['ground'])
         self.ground_sprites = self.create_tile_group(grounds_layout, 'ground')
@@ -125,16 +127,14 @@ class Level():
         
         self.enemies_sprites.draw(surface)
 
-        self.pg.update()
-        self.pg.draw()
-
         self.table_sprites.update(self.world_shift)
         self.table_sprites.draw(surface)
 
         self.book_sprites.update(self.world_shift)
         self.book_sprites.draw(surface)
+        self.pg.update()
+        self.pg.draw()
 
-        
 
         
         

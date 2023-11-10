@@ -1,5 +1,4 @@
-import pygame
-import time
+import pygame, time, sys
 from tile import AnimatedTile, StaticTile
 
 
@@ -24,7 +23,23 @@ class Player(AnimatedTile):
         self.beat_interval = self.level.beat_interval
         self.last_beat_time = 0
         self.beat_count = self.level.beat_count
+
+        self.combo = 0
+        self.motivation = 10
         
+
+    #def game_over(self):
+
+
+    def loose_motivation(self):
+        self.motivation -= 2
+        # if self.motivation <= 0:
+            #game_over()
+        print(f"Motivation : {str(self.motivation).zfill(2)}", end='\r')
+
+    def win_motivation(self):
+        self.motivation += 1
+        print(f"Motivation : {str(self.motivation).zfill(2)}", end='\r')
 
     def move(self, walls):
         
@@ -47,10 +62,11 @@ class Player(AnimatedTile):
 
                     current_time = pygame.time.get_ticks()
                     if current_time - self.last_beat_time <= self.tolerance * 1000:
-                        print("Dans les temps !")
+                        self.combo += 1
                     else:
-                        print("Trop tôt ou trop tard.")
-                    # new_rect.x -= 32
+                        self.combo = 0
+                    print(f"Combo : {str(self.combo).zfill(2)}", end='\r')
+                    
             self.is_moving = False
 
         if key[pygame.K_RIGHT] and self.is_moving:
@@ -68,9 +84,10 @@ class Player(AnimatedTile):
 
                     current_time = pygame.time.get_ticks()
                     if current_time - self.last_beat_time <= self.tolerance * 1000:
-                        print("Dans les temps !")
+                        self.combo += 1
                     else:
-                        print("Trop tôt ou trop tard.")
+                        self.combo = 0
+                    print(f"Combo : {str(self.combo).zfill(2)}", end='\r')
                     # new_rect.x += 32
             self.is_moving = False   
 
@@ -90,9 +107,10 @@ class Player(AnimatedTile):
 
                     current_time = pygame.time.get_ticks()
                     if current_time - self.last_beat_time <= self.tolerance * 1000:
-                        print("Dans les temps !")
+                        self.combo += 1
                     else:
-                        print("Trop tôt ou trop tard.")
+                        self.combo = 0
+                    print(f"Combo : {str(self.combo).zfill(2)}", end='\r')
                     # new_rect.y -= 32
             self.is_moving = False
 
@@ -112,9 +130,10 @@ class Player(AnimatedTile):
 
                     current_time = pygame.time.get_ticks()
                     if current_time - self.last_beat_time <= self.tolerance * 1000:
-                        print("Dans les temps !")
+                        self.combo += 1
                     else:
-                        print("Trop tôt ou trop tard.")
+                        self.combo = 0
+                    print(f"Combo : {str(self.combo).zfill(2)}", end='\r')
                     # new_rect.y += 32
             self.is_moving = False
                
@@ -124,10 +143,10 @@ class Player(AnimatedTile):
 
         if current_time - self.last_beat_time >= self.beat_interval:
             self.beat_count += 1
-            if self.beat_count % 2 == 0:
-                print("Temps fort de la musique ! /")
-            else:
-                print("Temps fort de la musique ! \\")
+#            if self.beat_count % 2 == 0:
+#                print("Temps fort de la musique ! /")
+#            else:
+#                print("Temps fort de la musique ! \\")
 
             # Mettez à jour le temps du dernier battement
             self.last_beat_time = current_time
@@ -148,5 +167,3 @@ class Player(AnimatedTile):
         self.rect.x += shift
         self.animate()
         self.move(self.walls)
-
-       
