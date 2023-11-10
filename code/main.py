@@ -1,9 +1,27 @@
-import pygame,sys
+import pygame,sys, argparse
 from settings import *
 from level import Level
 from game_data import *
 from button import Button
 from ProgressBar import ProgressBar
+
+parser = argparse.ArgumentParser(description="School'N'Beats est un jeu de rythme créé dans le cadre d'une GameJam organisée par l'IUT.")
+
+
+# Add arguments
+parser.add_argument('screen_width', type=int, nargs='?', default=1920, help='Largeur de la fenêtre (default: 1920)')
+parser.add_argument('screen_height', type=int, nargs='?', default=1080, help="Auteur de la fenêtre (default: 1080)")
+parser.add_argument('--tol', type=float, default=0.35, help='Tolerance value (default: 0.35), tolérance plus basse = plus dur. TOL > 0')
+
+args = parser.parse_args()
+
+# Set the entered information using sys.argv
+sys.argv[1:] = [str(args.screen_width), str(args.screen_height), '--tol', str(args.tol)]
+
+print("Tolerance:", args.tol)
+
+screen_width, screen_height = args.screen_width, args.screen_height
+tolerance = args.tol
 
 pygame.init()
 SCREEN = pygame.display.set_mode((screen_width,screen_height))
@@ -13,7 +31,7 @@ pygame.display.set_caption(GAME_NAME)
 
 pygame.mixer.music.load("../asset/musics/Menu.mp3")
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.9)
+pygame.mixer.music.set_volume(0.1)
 
 clock = pygame.time.Clock()
 bpm = 82.5
@@ -35,7 +53,7 @@ def play(difficulty):
     pygame.mixer.music.stop()
     pygame.mixer.music.load("../asset/musics/Level1.mp3")
     pygame.mixer.music.play(-1)
-    level = Level(level_1, SCREEN, bpm, difficulty)
+    level = Level(level_1, SCREEN, bpm, difficulty, tolerance)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

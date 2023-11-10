@@ -7,7 +7,7 @@ from player import Player
 from ProgressBar import ProgressBar
 
 class Level():
-    def __init__(self, level_data, surface, bpm, difficulty):
+    def __init__(self, level_data, surface, bpm, difficulty, tolerance):
         self.display_surface = surface
         self.world_shift = 0
         self.beat_interval = 60000 / bpm
@@ -16,6 +16,7 @@ class Level():
         self.difficulty = difficulty
         self.trial_complete = 0
         self.unlock_door = False
+        self.tolerance = tolerance
 
         # Ground setup
         grounds_layout = import_csv_layout(level_data['ground'])
@@ -87,7 +88,7 @@ class Level():
                        
 
                     if type == 'player':
-                        self.player = Player(tile_size, x, y, self.walls_sprites, self,self.display_surface)
+                        self.player = Player(tile_size, x, y, self.walls_sprites, self,self.display_surface, self.tolerance)
                         sprite = self.player 
 
                     if type == 'enemies':
